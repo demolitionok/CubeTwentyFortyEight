@@ -16,19 +16,25 @@ public class LangTextView : MonoBehaviour
     {
         textComponent.text = langText.GetText(language);
     }
-    private void OnEnable()
+
+    private void SubscribeToManager()
     {
-        LanguageManager.instance.OnLanguageChange += ChangeText;
+        if (LanguageManager.instance != null)
+            LanguageManager.instance.OnLanguageChange += ChangeText;
     }
+    private void OnEnable() => SubscribeToManager();
     private void OnDisable()
     {
         LanguageManager.instance.OnLanguageChange -= ChangeText;
     }
 
+    //OnEnable() of this script for some reason is called BEFORE LanguageManager's Awake(),
+    //so it throws NullReferenceException. Subscribition in start fixes it.
     private void Start()
     {
+        SubscribeToManager();
+
         langText = LanguageManager.instance.GetTextById(id);
-        Debug.Log(langText.ToString());
         textComponent.text = langText.GetText(LanguageManager.instance.language);
     }
 }
