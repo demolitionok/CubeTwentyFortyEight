@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LanguageManager : MonoBehaviour
 {
+    [SerializeField]
+    private TextAsset json;
+
     private Dictionary<string, LangText> texts;
     private TextUtility textUtility;
 
@@ -27,13 +32,12 @@ public class LanguageManager : MonoBehaviour
 
     public LangText GetTextById(string id) => texts[id];
 
+
     private void InitTexts()
     {
         texts = new Dictionary<string, LangText>();
         textUtility = new TextUtility();
-        string filePath = Application.persistentDataPath + @"/Language.json";
-
-        texts = textUtility.ReadJsonByPath(filePath);
+        texts = textUtility.JsonToDictionary(this.json.text);
     }
 
     private void SingletonCheck() 

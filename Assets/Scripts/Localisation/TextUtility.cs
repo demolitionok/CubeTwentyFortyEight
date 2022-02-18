@@ -28,16 +28,27 @@ public class TextUtility
         return content;
     }
 
-    public Dictionary<string, LangText> ReadJsonByPath(string filePath)
+    public string ReadJsonByPath(string filePath)
     {
-        string json = File.ReadAllText(filePath);
+        string json = string.Empty;
         using (StreamReader outputFile = new StreamReader(filePath))
         {
             json = outputFile.ReadToEnd();
         }
+
+        return json;
+    }
+
+    public Dictionary<string, LangText> JsonToDictionary(string json)
+    {
         var texts = JsonConvert.DeserializeObject<Dictionary<string, LangText>>(json);
 
         return texts;
+    }
+
+    public Dictionary<string, LangText> DictionaryByPath(string filePath)
+    {
+        return JsonToDictionary(ReadJsonByPath(filePath));
     }
     public void WriteToJson(string filePath, Dictionary<string, LangText> texts)
     {
