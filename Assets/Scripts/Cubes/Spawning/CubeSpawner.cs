@@ -19,8 +19,7 @@ public class CubeSpawner : MonoBehaviour
     [SerializeField]
     private UnityEvent<CubeMovement> OnPlayerCubeSpawn;
 
-    int count = 0;
-    private bool merging = false;
+    private int count = 0;
 
     private Vector3 spawnPosition { get => spawnPoint.position; }
 
@@ -34,7 +33,7 @@ public class CubeSpawner : MonoBehaviour
         Destroy(movement);
 
         var rigidbody = cube.GetComponent<Rigidbody>();
-        rigidbody.AddForce(Vector3.up*spawnForce, ForceMode.Impulse);
+        rigidbody.AddForce(Vector3.up * spawnForce, ForceMode.Impulse);
     }
 
     private void SpawnStartCube() 
@@ -70,6 +69,9 @@ public class CubeSpawner : MonoBehaviour
 
     private void MergeCubes(CubeData cubeData1, CubeData cubeData2) 
     {
+        //CubeDataCollider OnCollisionEnter invoking two times on collision,
+        //so it becames infinitely spawning new cubes
+        //count is a fix
         count++;
         if (count == 2)
         {
