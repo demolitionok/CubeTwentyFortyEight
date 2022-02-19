@@ -17,6 +17,12 @@ public class CubeMovement : MonoBehaviour
     public Vector3 leftBound { get => leftMovingBound.position; }
     public Vector3 rightBound { get => rightMovingBound.position; }
 
+    public void Init(Transform leftMovingBound, Transform rightMovingBound)
+    {
+        this.leftMovingBound = leftMovingBound;
+        this.rightMovingBound = rightMovingBound;
+    }
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -35,6 +41,6 @@ public class CubeMovement : MonoBehaviour
     }
     private void Start()
     {
-        ThrowForward();
+        //ThrowForward();
     }
 }
