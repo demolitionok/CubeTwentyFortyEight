@@ -38,9 +38,6 @@ public class CubeMovement : MonoBehaviour
     public void ThrowForward() 
     {
         rigidbody.AddForce(transform.forward * throwStrength, ForceMode.Impulse);
-    }
-    private void Start()
-    {
-        //ThrowForward();
+        Destroy(this);
     }
 }

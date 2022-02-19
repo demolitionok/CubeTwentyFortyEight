@@ -5,15 +5,12 @@ using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField]
     private CubeMovement cube;
 
-    private bool performed = false;
-
-    private void Awake()
+    public void SetCube(CubeMovement cube) 
     {
+        this.cube = cube;
     }
-
 
     private void HandleTouch()
     {
@@ -33,6 +30,13 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        if (cube == null)
+        {
+            Debug.Log("Input does not handling cube is null");
+            return;
+        }
+
+
         if (Input.touchCount > 0)
         {
             HandleTouch();
