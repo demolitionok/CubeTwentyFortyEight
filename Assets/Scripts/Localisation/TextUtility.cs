@@ -20,9 +20,11 @@ public class TextUtility
 
         var test = StringRussianEnglish("это тестовый текст", "this is a test text");
         var play = StringRussianEnglish("Играть", "Play");
+        var score = StringRussianEnglish("Очки : ", "Score : ");
 
         texts.Add("test", new LangText(test));
         texts.Add("play", new LangText(play));
+        texts.Add("score", new LangText(score));
         var content = JsonConvert.SerializeObject(texts);
 
         return content;

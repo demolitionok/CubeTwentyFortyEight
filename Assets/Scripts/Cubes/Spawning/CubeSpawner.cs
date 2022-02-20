@@ -39,7 +39,7 @@ public class CubeSpawner : MonoBehaviour
 
     private void SpawnStartCube() 
     {
-        var cube = SpawnCube(2, spawnPosition);
+        var cube = SpawnCube(2, spawnPosition, true);
         var cubeCollider = cube.GetComponent<CubeDataCollider>();
         cubeCollider.OnEqualCubeCollision += MergeCubes;
         cubeCollider.OnCubeAnyCollision += SpawnStartCube;
@@ -50,11 +50,11 @@ public class CubeSpawner : MonoBehaviour
         OnPlayerCubeSpawn?.Invoke(movement);
     }
 
-    private GameObject SpawnCube(int value, Vector3 pos)
+    private GameObject SpawnCube(int value, Vector3 pos, bool isStartCube = false)
     {
         var cube = Instantiate(playerCubePrefab, pos, Quaternion.identity);
         var data = cube.GetComponent<CubeData>();
-        data.SetValue(value);
+        data.Init(value, isStartCube);
 
         return cube;
     }

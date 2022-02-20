@@ -15,6 +15,7 @@ public class CubeDataCollider : MonoBehaviour
     private void Awake()
     {
         cubeData = GetComponent<CubeData>();
+        OnCubeAnyCollision += () => cubeData.isStartCube = false;
     }
 
     private void OnCollisionEnter(Collision collision)
