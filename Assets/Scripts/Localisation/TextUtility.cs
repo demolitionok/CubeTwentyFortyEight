@@ -56,7 +56,7 @@ public class TextUtility
 
         using (StreamWriter outputFile = new StreamWriter(filePath))
         {
-            outputFile.WriteLine();
+            outputFile.WriteLine(json);
         }
     }
 }

@@ -11,16 +11,19 @@ public class CubeViewController : MonoBehaviour
 
     private CubeData cubeData;
     private MeshRenderer meshRenderer;
+
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
         cubeData = GetComponent<CubeData>();
     }
+
     private void OnEnable()
     {
         cubeData.OnValueChange += ChangeColor;
         cubeData.OnValueChange += ChangeTextes;
     }
+
     private void OnDisable()
     {
         cubeData.OnValueChange -= ChangeColor;
@@ -31,6 +34,7 @@ public class CubeViewController : MonoBehaviour
     {
         meshRenderer.material.color = value.IntToRGB();
     }
+
     private void ChangeTextes(int value)
     {
         foreach (var text in texts) 

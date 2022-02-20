@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 public class CubeSpawner : MonoBehaviour
 {
+    #region serializedFields
     [SerializeField]
     private GameObject playerCubePrefab;
-
     [SerializeField]
     private Transform spawnPoint;
     [SerializeField]
@@ -15,11 +15,12 @@ public class CubeSpawner : MonoBehaviour
     [SerializeField]
     private Transform rightBound;
     [SerializeField]
-    private float spawnForce;
+    private float newCubeSpawnForce;
     [SerializeField]
     private UnityEvent<CubeMovement> OnPlayerCubeSpawn;
+    #endregion
 
-    private int count = 0;
+    private int collisionCount = 0;
 
     private Vector3 spawnPosition { get => spawnPoint.position; }
 
@@ -33,7 +34,7 @@ public class CubeSpawner : MonoBehaviour
         Destroy(movement);
 
         var rigidbody = cube.GetComponent<Rigidbody>();
-        rigidbody.AddForce(Vector3.up * spawnForce, ForceMode.Impulse);
+        rigidbody.AddForce(Vector3.up * newCubeSpawnForce, ForceMode.Impulse);
     }
 
     private void SpawnStartCube() 
@@ -49,15 +50,6 @@ public class CubeSpawner : MonoBehaviour
         OnPlayerCubeSpawn?.Invoke(movement);
     }
 
-    private Vector3 MiddlePos(Vector3 vector1, Vector3 vector2)
-    {
-        var resultX = (vector1.x + vector2.x) / 2f;
-        var resultY = (vector1.y + vector2.y) / 2f;
-        var resultZ = (vector1.z + vector2.z) / 2f;
-
-        return new Vector3(resultX, resultY, resultZ);
-    }
-
     private GameObject SpawnCube(int value, Vector3 pos)
     {
         var cube = Instantiate(playerCubePrefab, pos, Quaternion.identity);
@@ -69,11 +61,12 @@ public class CubeSpawner : MonoBehaviour
 
     private void MergeCubes(CubeData cubeData1, CubeData cubeData2) 
     {
-        //CubeDataCollider OnCollisionEnter invoking two times on collision,
-        //so it becames infinitely spawning new cubes
-        //count is a fix
-        count++;
-        if (count == 2)
+        //CubeDataCollider.OnCollisionEnter() invokes two times on collision,
+        //so it spawns another 2 cubes that also call that method.
+        //New cubes start to spawning infinitely.
+        //int collisionCount is a fix of that problem
+        collisionCount++;
+        if (collisionCount == 2)
         {
             var pos1 = cubeData1.transform.position;
             var pos2 = cubeData2.transform.position;
@@ -85,8 +78,16 @@ public class CubeSpawner : MonoBehaviour
             Destroy(cubeData2.gameObject);
 
             SpawnUpgradedCube(newValue, newPos);
-            count = 0;
+            collisionCount = 0;
         }
+    }
+    private Vector3 MiddlePos(Vector3 vector1, Vector3 vector2)
+    {
+        var resultX = (vector1.x + vector2.x) / 2f;
+        var resultY = (vector1.y + vector2.y) / 2f;
+        var resultZ = (vector1.z + vector2.z) / 2f;
+
+        return new Vector3(resultX, resultY, resultZ);
     }
 
     private void Start()
