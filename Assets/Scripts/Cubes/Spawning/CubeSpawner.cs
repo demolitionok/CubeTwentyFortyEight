@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using UnityEngine;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,13 +18,22 @@ public class CubeSpawner : MonoBehaviour
     private float newCubeSpawnForce;
     [SerializeField]
     private UnityEvent<CubeMovement> OnPlayerCubeSpawn;
+    [SerializeField]
+    private UnityEvent<int> OnScoreChange;
     #endregion
 
+    private int score = 0;
     private int collisionCount = 0;
+
+    private void AddScore(int scoreToAdd) 
+    {
+        score += scoreToAdd;
+        OnScoreChange?.Invoke(score);
+    }
 
     private Vector3 spawnPosition { get => spawnPoint.position; }
 
-    private void SpawnUpgradedCube(int value, Vector3 pos) 
+    private void SpawnUpgradedCube(int value, Vector3 pos)
     {
         var cube = SpawnCube(value, pos);
         var cubeCollider = cube.GetComponent<CubeDataCollider>();
@@ -34,12 +43,21 @@ public class CubeSpawner : MonoBehaviour
         Destroy(movement);
 
         var rigidbody = cube.GetComponent<Rigidbody>();
-        rigidbody.AddForce(Vector3.up * newCubeSpawnForce, ForceMode.Impulse);
+
+        var randX = UnityEngine.Random.Range(-1f, 1f);
+        var randZ = UnityEngine.Random.Range(-0.2f, 1f);
+        Vector3 forceDirection = (new Vector3(randX, 1f, randZ)).normalized;
+
+        rigidbody.AddForce(forceDirection * newCubeSpawnForce, ForceMode.Impulse);
+        rigidbody.AddForceAtPosition(Vector3.forward * 2f, new Vector3(-0.3f, 0.1f, 0.6f), ForceMode.Impulse);
     }
 
-    private void SpawnStartCube() 
+    private void SpawnStartCube()
     {
-        var cube = SpawnCube(2, spawnPosition, true);
+        int val = UnityEngine.Random.Range(2, 5);
+        var resultVal = (val / 2) * 2;
+        var cube = SpawnCube(resultVal, spawnPosition, true);
+
         var cubeCollider = cube.GetComponent<CubeDataCollider>();
         cubeCollider.OnEqualCubeCollision += MergeCubes;
         cubeCollider.OnCubeAnyCollision += SpawnStartCube;
@@ -73,6 +91,7 @@ public class CubeSpawner : MonoBehaviour
 
             var newPos = MiddlePos(pos1, pos2);
             var newValue = cubeData1.value + cubeData2.value;
+            AddScore(newValue);
 
             Destroy(cubeData1.gameObject);
             Destroy(cubeData2.gameObject);
@@ -92,6 +111,7 @@ public class CubeSpawner : MonoBehaviour
 
     private void Start()
     {
+        AddScore(0);
         SpawnStartCube();
     }
 }

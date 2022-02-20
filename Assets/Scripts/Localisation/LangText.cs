@@ -12,15 +12,15 @@ public enum Language
 [Serializable]
 public class LangText
 {
-    public Dictionary<Language, string> LanguageText;
+    public Dictionary<Language, string> translations;
 
     public string GetText(Language lang) 
     {
-        return LanguageText[lang];
+        return translations[lang];
     }
 
     public LangText(Dictionary<Language, string> translations) 
     {
-        LanguageText = translations;
+        this.translations = translations;
     }
 }

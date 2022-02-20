@@ -33,6 +33,14 @@ public class LanguageManager : MonoBehaviour
     public LangText GetTextById(string id) => texts[id];
 
 
+    private void WriteSampleJson()
+    {
+        textUtility = new TextUtility();
+        var json = textUtility.GenerateSampleJson();
+        var filePath = Application.dataPath + @"\Jsons\Localisation.json";
+        textUtility.WriteToJson(filePath, json);
+    }
+
     private void InitTexts()
     {
         texts = new Dictionary<string, LangText>();

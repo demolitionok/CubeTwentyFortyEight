@@ -1,1 +1,1 @@
-{"test":{"LanguageText":{"Russian":"это тестовый текст","English":"this is a test text"}},"play":{"LanguageText":{"Russian":"Играть","English":"Play"}}}
+{"test":{"translations":{"Russian":"это тестовый текст","English":"this is a test text"}},"play":{"translations":{"Russian":"Играть","English":"Play"}},"score":{"translations":{"Russian":"Очки : ","English":"Score : "}}}

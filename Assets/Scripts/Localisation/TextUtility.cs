@@ -25,6 +25,7 @@ public class TextUtility
         texts.Add("test", new LangText(test));
         texts.Add("play", new LangText(play));
         texts.Add("score", new LangText(score));
+
         var content = JsonConvert.SerializeObject(texts);
 
         return content;
@@ -56,6 +57,13 @@ public class TextUtility
     {
         var json = JsonConvert.SerializeObject(texts);
 
+        using (StreamWriter outputFile = new StreamWriter(filePath))
+        {
+            outputFile.WriteLine(json);
+        }
+    }
+    public void WriteToJson(string filePath, string json)
+    {
         using (StreamWriter outputFile = new StreamWriter(filePath))
         {
             outputFile.WriteLine(json);
