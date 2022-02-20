@@ -17,6 +17,7 @@ public class InputManager : MonoBehaviour
         var touch = Input.GetTouch(0);
         var phase = touch.phase;
         var pos = touch.position;
+
         switch (phase) 
         {
             case TouchPhase.Moved:
