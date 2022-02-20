@@ -808,6 +808,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 972397463, guid: 008f5e4265e4b3c4d9871e2d86628636, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2132160829, guid: 008f5e4265e4b3c4d9871e2d86628636, type: 3}
       propertyPath: OnGameEnd.m_PersistentCalls.m_Calls.Array.size
       value: 1

@@ -1072,7 +1072,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftMovingBound: {fileID: 0}
   rightMovingBound: {fileID: 0}
-  throwStrength: 6
+  throwStrength: 9
 --- !u!114 &1328929160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1104,6 +1104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 681b99d2ec7268346943b6769bcee57f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStartCube: 0
 --- !u!114 &-1680918976775091550
 MonoBehaviour:
   m_ObjectHideFlags: 0
