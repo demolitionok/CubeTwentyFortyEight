@@ -12,6 +12,17 @@ public class InputManager : MonoBehaviour
         this.cube = cube;
     }
 
+    private void HandleMouse() 
+    {
+        var mousePos = Input.mousePosition;
+
+        cube.MoveTo(mousePos);
+        if (Input.GetMouseButtonDown(0))
+        {
+            cube.ThrowForward();
+        }
+    }
+
     private void HandleTouch()
     {
         var touch = Input.GetTouch(0);
@@ -41,6 +52,10 @@ public class InputManager : MonoBehaviour
         if (Input.touchCount > 0)
         {
             HandleTouch();
+        }
+        else
+        {
+            HandleMouse();
         }
     }
 }

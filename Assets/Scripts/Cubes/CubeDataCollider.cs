@@ -9,6 +9,8 @@ public class CubeDataCollider : MonoBehaviour
     [SerializeField]
     private LayerMask ignoreLayer;
     private CubeData cubeData;
+    private bool merged = false;
+
     public event Action<CubeData, CubeData> OnEqualCubeCollision;
     public event Action OnCubeAnyCollision;
 
@@ -16,6 +18,25 @@ public class CubeDataCollider : MonoBehaviour
     {
         cubeData = GetComponent<CubeData>();
         OnCubeAnyCollision += () => cubeData.isStartCube = false;
+    }
+    private void CompareCubes(GameObject other) 
+    {
+        if (other.TryGetComponent(out CubeData cubeData))
+        {
+            if (cubeData.value == this.cubeData.value)
+            {
+                if (other.TryGetComponent(out CubeDataCollider collider))
+                {
+                    if ((collider.merged || merged) == false)
+                    {
+                        collider.merged = true;
+                        merged = true;
+                        OnEqualCubeCollision?.Invoke(this.cubeData, cubeData);
+                    }
+                }
+            }
+            
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -28,13 +49,8 @@ public class CubeDataCollider : MonoBehaviour
         }
 
 
-        if (other.TryGetComponent(out CubeData cubeData))
-        {
-            if (cubeData.value == this.cubeData.value)
-            {
-                OnEqualCubeCollision?.Invoke(this.cubeData, cubeData);
-            }
-        }
+        CompareCubes(other);
+
         OnCubeAnyCollision?.Invoke();
         OnCubeAnyCollision = null;
     }

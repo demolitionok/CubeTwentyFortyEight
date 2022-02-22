@@ -23,7 +23,6 @@ public class CubeSpawner : MonoBehaviour
     #endregion
 
     private int score = 0;
-    private int collisionCount = 0;
 
     private void AddScore(int scoreToAdd) 
     {
@@ -79,26 +78,17 @@ public class CubeSpawner : MonoBehaviour
 
     private void MergeCubes(CubeData cubeData1, CubeData cubeData2) 
     {
-        //CubeDataCollider.OnCollisionEnter() invokes two times on collision,
-        //so it spawns another 2 cubes that also call that method.
-        //New cubes start to spawning infinitely.
-        //int collisionCount is a fix of that problem
-        collisionCount++;
-        if (collisionCount == 2)
-        {
-            var pos1 = cubeData1.transform.position;
-            var pos2 = cubeData2.transform.position;
+        var pos1 = cubeData1.transform.position;
+        var pos2 = cubeData2.transform.position;
 
-            var newPos = MiddlePos(pos1, pos2);
-            var newValue = cubeData1.value + cubeData2.value;
-            AddScore(newValue);
+        var newPos = MiddlePos(pos1, pos2);
+        var newValue = cubeData1.value + cubeData2.value;
+        AddScore(newValue);
 
-            Destroy(cubeData1.gameObject);
-            Destroy(cubeData2.gameObject);
+        Destroy(cubeData1.gameObject);
+        Destroy(cubeData2.gameObject);
 
-            SpawnUpgradedCube(newValue, newPos);
-            collisionCount = 0;
-        }
+        SpawnUpgradedCube(newValue, newPos);
     }
     private Vector3 MiddlePos(Vector3 vector1, Vector3 vector2)
     {
