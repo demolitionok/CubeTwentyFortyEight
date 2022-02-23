@@ -54,6 +54,7 @@ public class CubeDataCollider : MonoBehaviour
         CompareCubes(other);
 
         OnCubeAnyCollision?.Invoke();
+        OnCubeAnyCollision = null;
     }
 
     private void OnDestroy()
