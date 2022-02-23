@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine;
 using UnityEngine.Events;
 
 public class CubeSpawner : MonoBehaviour
@@ -47,8 +46,19 @@ public class CubeSpawner : MonoBehaviour
         var randZ = UnityEngine.Random.Range(-0.2f, 1f);
         Vector3 forceDirection = (new Vector3(randX, 1f, randZ)).normalized;
 
+        var randRotX = UnityEngine.Random.Range(-1f, 1f);
+        var randRotY = UnityEngine.Random.Range(0f, 1f);
+        var randRotZ = UnityEngine.Random.Range(-1f, 1f);
+
+        var randPosX = UnityEngine.Random.Range(-0.9f, 0.9f);
+        var randPosY = UnityEngine.Random.Range(-0.9f, 0.9f);
+        var randPosZ = UnityEngine.Random.Range(-0.9f, 0.9f);
+
+        Vector3 secondForce = new Vector3(randRotX, randRotY, randRotZ).normalized;
+        Vector3 secondForcePos = new Vector3(randPosX, randPosY, randRotZ);
+
         rigidbody.AddForce(forceDirection * newCubeSpawnForce, ForceMode.Impulse);
-        rigidbody.AddForceAtPosition(Vector3.forward * 2f, new Vector3(-0.3f, 0.1f, 0.6f), ForceMode.Impulse);
+        rigidbody.AddForceAtPosition(secondForce * 2f, secondForcePos, ForceMode.Impulse);
     }
 
     private void SpawnStartCube()
