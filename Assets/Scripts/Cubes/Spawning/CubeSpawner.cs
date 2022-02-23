@@ -14,6 +14,8 @@ public class CubeSpawner : MonoBehaviour
     [SerializeField]
     private Transform rightBound;
     [SerializeField]
+    private float throwStrength;
+    [SerializeField]
     private float newCubeSpawnForce;
     [SerializeField]
     private UnityEvent<CubeMovement> OnPlayerCubeSpawn;
@@ -31,31 +33,46 @@ public class CubeSpawner : MonoBehaviour
 
     private Vector3 spawnPosition { get => spawnPoint.position; }
 
+    private Vector3 GenerateSpawnDirection()
+    {
+        var randX = UnityEngine.Random.Range(-1f, 1f);
+        var randZ = UnityEngine.Random.Range(-0.2f, 1f);
+        Vector3 forceDirection = (new Vector3(randX, 1f, randZ)).normalized;
+        
+        return forceDirection;
+    }
+
+    private Vector3 GenerateRotatingForce()
+    {
+        var randRotX = UnityEngine.Random.Range(-1f, 1f);
+        var randRotY = UnityEngine.Random.Range(0.5f, 1f);
+        var randRotZ = UnityEngine.Random.Range(-1f, 1f);
+        Vector3 force = new Vector3(randRotX, randRotY, randRotZ).normalized;
+
+        return force;
+    }
+
+    private Vector3 RandomLocalPosition()
+    {
+        var randPosX = UnityEngine.Random.Range(-0.9f, 0.9f);
+        var randPosY = UnityEngine.Random.Range(-0.9f, 0.9f);
+        var randPosZ = UnityEngine.Random.Range(-0.9f, 0.9f);
+
+        Vector3 secondForcePos = new Vector3(randPosX, randPosY, randPosZ);
+        return secondForcePos;
+    }
+
     private void SpawnUpgradedCube(int value, Vector3 pos)
     {
         var cube = SpawnCube(value, pos);
         var cubeCollider = cube.GetComponent<CubeDataCollider>();
         cubeCollider.OnEqualCubeCollision += MergeCubes;
 
-        var movement = cube.GetComponent<CubeMovement>();
-        Destroy(movement);
-
         var rigidbody = cube.GetComponent<Rigidbody>();
 
-        var randX = UnityEngine.Random.Range(-1f, 1f);
-        var randZ = UnityEngine.Random.Range(-0.2f, 1f);
-        Vector3 forceDirection = (new Vector3(randX, 1f, randZ)).normalized;
-
-        var randRotX = UnityEngine.Random.Range(-1f, 1f);
-        var randRotY = UnityEngine.Random.Range(0f, 1f);
-        var randRotZ = UnityEngine.Random.Range(-1f, 1f);
-
-        var randPosX = UnityEngine.Random.Range(-0.9f, 0.9f);
-        var randPosY = UnityEngine.Random.Range(-0.9f, 0.9f);
-        var randPosZ = UnityEngine.Random.Range(-0.9f, 0.9f);
-
-        Vector3 secondForce = new Vector3(randRotX, randRotY, randRotZ).normalized;
-        Vector3 secondForcePos = new Vector3(randPosX, randPosY, randRotZ);
+        var secondForce = GenerateRotatingForce();
+        var secondForcePos = RandomLocalPosition();
+        var forceDirection = GenerateSpawnDirection();
 
         rigidbody.AddForce(forceDirection * newCubeSpawnForce, ForceMode.Impulse);
         rigidbody.AddForceAtPosition(secondForce * 2f, secondForcePos, ForceMode.Impulse);
@@ -71,8 +88,8 @@ public class CubeSpawner : MonoBehaviour
         cubeCollider.OnEqualCubeCollision += MergeCubes;
         cubeCollider.OnCubeAnyCollision += SpawnStartCube;
 
-        var movement = cube.GetComponent<CubeMovement>();
-        movement.Init(leftBound, rightBound);
+        var movement = cube.AddComponent<CubeMovement>();
+        movement.Init(leftBound, rightBound, throwStrength);
 
         OnPlayerCubeSpawn?.Invoke(movement);
     }

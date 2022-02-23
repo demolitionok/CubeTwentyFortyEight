@@ -14,10 +14,12 @@ public class CubeDataCollider : MonoBehaviour
     public event Action<CubeData, CubeData> OnEqualCubeCollision;
     public event Action OnCubeAnyCollision;
 
+    private void DisableIsStartCube() => cubeData.isStartCube = false;
+
     private void Awake()
     {
         cubeData = GetComponent<CubeData>();
-        OnCubeAnyCollision += () => cubeData.isStartCube = false;
+        OnCubeAnyCollision += DisableIsStartCube;
     }
     private void CompareCubes(GameObject other) 
     {
@@ -52,7 +54,6 @@ public class CubeDataCollider : MonoBehaviour
         CompareCubes(other);
 
         OnCubeAnyCollision?.Invoke();
-        OnCubeAnyCollision = null;
     }
 
     private void OnDestroy()

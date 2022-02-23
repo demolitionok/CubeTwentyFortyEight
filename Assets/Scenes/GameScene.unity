@@ -466,6 +466,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 1388972475}
   leftBound: {fileID: 1370639141}
   rightBound: {fileID: 1562069059}
+  throwStrength: 12
   newCubeSpawnForce: 7
   OnPlayerCubeSpawn:
     m_PersistentCalls:
